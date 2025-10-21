@@ -40,7 +40,7 @@ class PrinterOperation:
             if not self.config.printer_connected or not self.printer:
                 await self.printer_connect(self.config.device)
 
-            if self.config.device == "b1":
+            if self.config.device == "b1" or self.config.device == "d110_m":
                 await self.printer.print_imageV2(image, density, quantity)
             else:
                 await self.printer.print_image(image, density, quantity)

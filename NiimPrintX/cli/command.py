@@ -32,8 +32,8 @@ def niimbot_cli(ctx, verbose):
 @click.option(
     "-m",
     "--model",
-    type=click.Choice(["b1", "b18", "b21", "d11", "d110"], False),
-    default="d110",
+    type=click.Choice(["b1", "b18", "b21", "d11", "d110", "d110_m"], False),
+    default="d110_m",
     show_default=True,
     help="Niimbot printer model",
 )
@@ -86,10 +86,10 @@ def print_command(model, density, rotate, image, quantity, vertical_offset, hori
 
     if model in ("b1", "b18", "b21"):
         max_width_px = 400
-    if model in ("d11", "d110"):
+    if model in ("d11", "d110", "d110_m"):
         max_width_px = 240
 
-    if model in ("b18", "d11", "d110") and density > 3:
+    if model in ("b18", "d11", "d110", "d110_m") and density > 3:
         density = 3
     try:
         image = Image.open(image)
@@ -111,8 +111,8 @@ async def _print(model, density, image, quantity, vertical_offset, horizontal_of
         if await printer.connect():
             print(f"Connected to {device.name}")
 
-        if model == "b1":
-            print_info("Printing with B1 model")
+        if model == "b1" or model == "d110_m":
+            print_info("Printing with B1 / D110_M model")
             await printer.print_imageV2(image, density=density, quantity=quantity)
         else:
             print_info("Printing with D model")
@@ -131,8 +131,8 @@ async def _print(model, density, image, quantity, vertical_offset, horizontal_of
 @click.option(
     "-m",
     "--model",
-    type=click.Choice(["b1", "b18", "b21", "d11", "d110"], False),
-    default="d110",
+    type=click.Choice(["b1", "b18", "b21", "d11", "d110", "d110_m"], False),
+    default="d110_m",
     show_default=True,
     help="Niimbot printer model",
 )
